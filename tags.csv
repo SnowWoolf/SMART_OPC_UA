@@ -1,7 +1,7 @@
-﻿Тип устройства;Тег API УМ;Тег SCADA;Описание
-MIRTEK12_32;ElMomentVoltage;UA;Напряжение фазы A
-MIRTEK12_32;ElMomentVoltage;UB;Напряжение фазы B
-MIRTEK12_32;ElMomentVoltage;UC;Напряжение фазы C
-MIRTEK12_32;ElMomentCurrent;IA;Ток фазы A
-MIRTEK12_32;ElMomentCurrent;IB;Ток фазы B
-MIRTEK12_32;ElMomentCurrent;IC;Ток фазы C
+Тип устройства,Тег API УМ,Тег SCADA,Описание
+MIRTEK12_32,ElMomentVoltage,UA,Напряжение фазы A
+MIRTEK12_32,ElMomentVoltage,UB,Напряжение фазы B
+MIRTEK12_32,ElMomentVoltage,UC,Напряжение фазы C
+MIRTEK12_32,ElMomentCurrent,IA,Ток фазы A
+MIRTEK12_32,ElMomentCurrent,IB,Ток фазы B
+MIRTEK12_32,ElMomentCurrent,IC,Ток фазы C
