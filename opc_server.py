@@ -1,24 +1,28 @@
+import csv
 import requests
-import pandas as pd
 from opcua import Server, ua
 
 
-# -----------------------------
+# --------------------------------------------------
 # CONFIG
-# -----------------------------
+# --------------------------------------------------
 
 API_URL = "http://localhost"
 LOGIN = "admin"
 PASSWORD = "admin"
 
-EXCEL_FILE = "tags.xlsx"
+CSV_FILE = "tags.csv"
+
+# --------------------------------------------------
+# HTTP SESSION
+# --------------------------------------------------
 
 session = requests.Session()
 
 
-# -----------------------------
+# --------------------------------------------------
 # API LOGIN
-# -----------------------------
+# --------------------------------------------------
 
 def api_login():
 
@@ -35,24 +39,9 @@ def api_login():
     print("API login success")
 
 
-# -----------------------------
+# --------------------------------------------------
 # API WRAPPERS
-# -----------------------------
-
-def api_post(url, payload, headers=None):
-
-    r = session.post(url, json=payload, headers=headers)
-
-    if r.status_code == 401:
-
-        print("Session expired -> relogin")
-
-        api_login()
-
-        r = session.post(url, json=payload, headers=headers)
-
-    return r
-
+# --------------------------------------------------
 
 def api_get(url):
 
@@ -69,9 +58,38 @@ def api_get(url):
     return r
 
 
-# -----------------------------
+def api_post(url, payload):
+
+    r = session.post(
+        url,
+        json=payload,
+        headers={
+            "Content-Type": "application/json",
+            "X-Protocol-USPD": "40"
+        }
+    )
+
+    if r.status_code == 401:
+
+        print("Session expired -> relogin")
+
+        api_login()
+
+        r = session.post(
+            url,
+            json=payload,
+            headers={
+                "Content-Type": "application/json",
+                "X-Protocol-USPD": "40"
+            }
+        )
+
+    return r
+
+
+# --------------------------------------------------
 # API FUNCTIONS
-# -----------------------------
+# --------------------------------------------------
 
 def get_meters():
 
@@ -107,11 +125,7 @@ def read_api_value(meter_id, measure, tag):
 
     r = api_post(
         API_URL + "/meter/data/moment",
-        payload,
-        headers={
-            "Content-Type": "application/json",
-            "X-Protocol-USPD": "40"
-        }
+        payload
     )
 
     data = r.json()
@@ -119,9 +133,41 @@ def read_api_value(meter_id, measure, tag):
     return data["data"][0]["value"]
 
 
-# -----------------------------
-# DATASOURCE
-# -----------------------------
+# --------------------------------------------------
+# CSV MAPPING
+# --------------------------------------------------
+
+def load_mapping(filename):
+
+    mapping = {}
+
+    with open(filename, newline='', encoding='utf-8') as f:
+
+        reader = csv.DictReader(f)
+
+        required = ["Тип устройства", "Тег API УМ", "Тег SCADA"]
+
+        for col in required:
+            if col not in reader.fieldnames:
+                raise Exception("CSV column missing: " + col)
+
+        for row in reader:
+
+            device_type = row["Тип устройства"]
+            api_tag = row["Тег API УМ"]
+            scada_tag = row["Тег SCADA"]
+
+            mapping.setdefault(device_type, []).append({
+                "api": api_tag,
+                "scada": scada_tag
+            })
+
+    return mapping
+
+
+# --------------------------------------------------
+# OPC DATASOURCE
+# --------------------------------------------------
 
 class TagDataSource:
 
@@ -142,31 +188,15 @@ class TagDataSource:
         return ua.Variant(value, ua.VariantType.Float)
 
 
-# -----------------------------
-# LOAD EXCEL
-# -----------------------------
+# --------------------------------------------------
+# INIT
+# --------------------------------------------------
 
-print("Loading Excel mapping")
+print("Loading tag mapping")
 
-df = pd.read_excel(EXCEL_FILE)
+mapping = load_mapping(CSV_FILE)
 
-mapping = {}
-
-for _, row in df.iterrows():
-
-    device_type = row["Тип устройства"]
-    api_tag = row["Тег API УМ"]
-    scada_tag = row["Тег SCADA"]
-
-    mapping.setdefault(device_type, []).append({
-        "api": api_tag,
-        "scada": scada_tag
-    })
-
-
-# -----------------------------
-# OPC SERVER
-# -----------------------------
+print("Starting OPC UA server")
 
 server = Server()
 
@@ -181,25 +211,27 @@ objects = server.get_objects_node()
 
 meters_folder = objects.add_folder(idx, "Meters")
 
-
-# -----------------------------
-# INIT
-# -----------------------------
+# --------------------------------------------------
+# LOGIN API
+# --------------------------------------------------
 
 print("Login to API")
 
 api_login()
 
-print("Get meters")
+# --------------------------------------------------
+# GET METERS
+# --------------------------------------------------
+
+print("Getting meters")
 
 meters = get_meters()
 
 print("Meters:", meters)
 
-
-# -----------------------------
+# --------------------------------------------------
 # BUILD OPC TREE
-# -----------------------------
+# --------------------------------------------------
 
 for meter in meters:
 
@@ -231,19 +263,21 @@ for meter in meters:
 
         var.set_value_callback(lambda node, ds=datasource: ds.read())
 
-
-# -----------------------------
-# START
-# -----------------------------
+# --------------------------------------------------
+# START SERVER
+# --------------------------------------------------
 
 server.start()
 
 print("OPC UA server started")
 
 try:
+
     while True:
         pass
 
 except KeyboardInterrupt:
+
+    print("Stopping server")
 
     server.stop()
