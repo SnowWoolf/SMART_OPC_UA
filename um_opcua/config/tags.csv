@@ -5,24 +5,7 @@
 60,ElMomentQuality,IA,Ток фазы A
 60,ElMomentQuality,IB,Ток фазы B
 60,ElMomentQuality,IC,Ток фазы C
-60,ElMomentEnergy,A+0,Активная энергия суммарная
-60,ElMomentEnergy,A+1,Тариф 1
-60,ElMomentEnergy,A+2,Тариф 2
-60,ElMomentEnergy,A+3,Тариф 3
 60,GetTime,,Время
-60,ElMomentQuality,Freq,Частота
-254,ElMomentQuality,UA,Напряжение фазы A
-254,ElMomentQuality,UB,Напряжение фазы B
-254,ElMomentQuality,UC,Напряжение фазы C
-254,ElMomentQuality,IA,Ток фазы A
-254,ElMomentQuality,IB,Ток фазы B
-254,ElMomentQuality,IC,Ток фазы C
-254,ElMomentEnergy,A+0,Активная энергия суммарная
-254,ElMomentEnergy,A+1,Тариф 1
-254,ElMomentEnergy,A+2,Тариф 2
-254,ElMomentEnergy,A+3,Тариф 3
-254,GetTime,,Время
-254,ElMomentQuality,Freq,Частота
 60,ElDayEnergy,A+0,A+ на начало суток
 60,ElMonthEnergy,A+0,A+ на начало месяца
 60,ElDayConsEnergy,A+0,A+ потребление за сутки
