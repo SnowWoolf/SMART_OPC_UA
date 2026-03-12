@@ -76,7 +76,7 @@ PROTOCOL=40
 sudo apt update
 sudo apt install -y git build-essential gcc pkg-config cmake python3 libcurl4-openssl-dev libcjson-dev
 ```
-### Скачивание библиотеки
+### Загрузка и установка библиотеки
 ```
 cd ~
 git clone https://github.com/open62541/open62541.git
