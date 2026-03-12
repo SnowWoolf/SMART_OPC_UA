@@ -34,6 +34,7 @@ endif()
 
 add_executable(um_opcua
     src/main.c
+    src/api_config.c
     src/api_client.c
     src/tag_config.c
     src/opc_nodes.c

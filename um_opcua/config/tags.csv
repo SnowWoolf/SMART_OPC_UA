@@ -1,11 +1,12 @@
 Тип устройства,Тип показаний,Тег API,Тег SCADA
-60,ElMomentQuality,UA,Напряжение фазы A
-60,ElMomentQuality,UB,Напряжение фазы B
-60,ElMomentQuality,UC,Напряжение фазы C
-60,ElMomentQuality,IA,Ток фазы A
-60,ElMomentQuality,IB,Ток фазы B
-60,ElMomentQuality,IC,Ток фазы C
-60,GetTime,,Время
-60,ElDayEnergy,A+0,A+ на начало суток
-60,ElMonthEnergy,A+0,A+ на начало месяца
-60,ElDayConsEnergy,A+0,A+ потребление за сутки
+3,ElMomentQuality,UA,Напряжение фазы A
+3,ElMomentQuality,UB,Напряжение фазы B
+3,ElMomentQuality,UC,Напряжение фазы C
+3,ElMomentQuality,IA,Ток фазы A
+3,ElMomentQuality,IB,Ток фазы B
+3,ElMomentQuality,IC,Ток фазы C
+3,GetTime,,Время
+3,ElDayEnergy,A+0,A+ на начало суток
+3,ElMonthEnergy,A+0,A+ на начало месяца
+3,ElDayConsEnergy,A+0,A+ потребление за сутки
+3,ElArr1ConsPower,P+,P+ профиль мощности

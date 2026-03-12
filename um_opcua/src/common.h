@@ -9,16 +9,18 @@
 #include <open62541/server_config_default.h>
 #include <open62541/plugin/log_stdout.h>
 
-#define API_URL   "http://localhost"
-#define LOGIN     "admin"
-#define PASSWORD  "admin"
-#define PROTOCOL  "40"
-#define CSV_FILE  "../config/tags.csv"
+#define API_CFG_FILE "../config/API.cfg"
+#define CSV_FILE     "../config/tags.csv"
 
 #define MAX_METERS       256
 #define MAX_MAPPINGS     4096
 #define MAX_ARCH_POINTS  4096
 #define STRSZ            128
+
+extern char API_URL[STRSZ];
+extern char LOGIN[STRSZ];
+extern char PASSWORD[STRSZ];
+extern char PROTOCOL[STRSZ];
 
 typedef enum {
     TAGKIND_UNKNOWN = 0,

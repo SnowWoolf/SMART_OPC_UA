@@ -234,9 +234,15 @@ create_opc_nodes(UA_Server *server,
             UA_VariableAttributes vAttr = UA_VariableAttributes_default;
             vAttr.displayName = UA_LOCALIZEDTEXT_ALLOC("ru-RU", map->display);
             vAttr.accessLevel = UA_ACCESSLEVELMASK_READ;
-            vAttr.userAccessLevel = UA_ACCESSLEVELMASK_READ;
-            vAttr.valueRank = -1;
-            vAttr.historizing = (map->kind != TAGKIND_CURRENT);
+			vAttr.userAccessLevel = UA_ACCESSLEVELMASK_READ;
+
+			if(map->kind != TAGKIND_CURRENT) {
+				vAttr.accessLevel |= UA_ACCESSLEVELMASK_HISTORYREAD;
+				vAttr.userAccessLevel |= UA_ACCESSLEVELMASK_HISTORYREAD;
+			}
+
+			vAttr.valueRank = -1;
+			vAttr.historizing = (map->kind != TAGKIND_CURRENT);
 
             if(map->value_type == VALTYPE_DATETIME) {
                 UA_DateTime initDt = UA_DateTime_now();

@@ -39,9 +39,13 @@ cd ~/um_opcua/build
 
 ### Пересборка и запуск:
 ```
+cd /root/um_opcua
+rm -rf build
+mkdir build
 cd build
 cmake ..
 make -j"$(nproc)"
+
 ./um_opcua
 ```
 
@@ -53,78 +57,152 @@ make -j"$(nproc)"
 um_opcua/
 ├── CMakeLists.txt
 ├── config/
-│   └── tags.csv
+│   ├── tags.csv
+│   └── API.cfg
 └── src/
     ├── main.c
     ├── common.h
+    │
+    ├── api_config.c        ← новый модуль чтения /config/API.cfg
+    ├── api_config.h        ← заголовок для load_api_config()
+    │
     ├── api_client.c
     ├── api_client.h
+    │
     ├── tag_config.c
     ├── tag_config.h
+    │
     ├── opc_nodes.c
     ├── opc_nodes.h
+    │
     ├── opc_history.c
     └── opc_history.h
 ```
 
-### Что делает каждый модуль
+### Роли модулей
 
-`api_client.*`
+##### main.c
 
-- логин в API
+Точка входа сервера:
 
-- GET /settings/meter/table
+- загрузка API конфигурации
 
-- POST /meter/data/moment
+- авторизация API
 
-- POST /meter/data/arch
-
-- нормализация ответов API в внутренние структуры
-
-
-`tag_config.*`
+- загрузка списка счетчиков
 
 - загрузка tags.csv
 
-- определение типа тега:
+- запуск OPC UA сервера
 
-    - current
+- главный цикл
 
-    - day history
+##### common.h
 
-    - month history
+Общие структуры проекта:
+```
+MeterInfo
+TagMapping
+TagContext
+ArchivePoint
+ArchiveResult
+AppConfig
+```
+И глобальные параметры API:
+```
+API_URL
+LOGIN
+PASSWORD
+PROTOCOL
+```
+##### api_config.c
 
-- описание OPC UA data type и признака historizing
+Читает файл:
 
+`/config/API.cfg`
 
-`opc_nodes.*`
+и заполняет:
+```
+API_URL
+LOGIN
+PASSWORD
+PROTOCOL
+```
+##### api_client.c
 
-- построение дерева узлов
+Работа с API УСПД:
+```
+/auth
+/settings/meter/table
+/meter/data/moment
+/meter/data/arch
+```
+Функции:
+```
+api_login()
+api_get_meters()
+api_read_moment()
+api_read_archive()
+```
+##### tag_config.c
 
-- создание current и history variable nodes
+Читает:
 
-- привязка nodeContext
+`config/tags.csv`
 
-- current DataSource read
+И формирует таблицу маппинга:
+```
+Тип устройства
+Тип показаний
+API тег
+SCADA тег
+```
+##### opc_nodes.c
 
+Создает OPC UA дерево:
+```
+Objects
+ └── Meters
+      └── Meter
+           └── Variables
+```
 
-`opc_history.*`
+И регистрирует:
 
-- backend для HistoryRead
+`DataSource Read`
+##### opc_history.c
 
-- перевод HistoryReadRawModified в вызов /meter/data/arch
+Реализует:
 
-- сборка массива UA_DataValue
+`HistoryRead (ReadRaw)`
 
+Поток:
+```
+OPC client
+   ↓
+HistoryRead
+   ↓
+opc_history.c
+   ↓
+API /meter/data/arch
+   ↓
+UA_DataValue[]
+```
 
-`main.c`
+#### Конфигурационные файлы
 
-- инициализация
+##### config/tags.csv
 
-- логин
+описание OPC тегов
 
-- загрузка конфигурации
+`device_type,measure,api_tag,display`
 
-- создание адресного пространства
+##### config/API.cfg
 
-- запуск сервера
+сетевые настройки API
+```
+URL=http://192.168.202.50
+LOGIN=admin
+PASSWORD=admin
+PROTOCOL=40
+```

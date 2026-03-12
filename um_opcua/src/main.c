@@ -7,6 +7,7 @@
 #include <curl/curl.h>
 
 #include "common.h"
+#include "api_config.h"
 #include "api_client.h"
 #include "tag_config.h"
 #include "opc_nodes.h"
@@ -30,6 +31,8 @@ main(void) {
 
     AppConfig app;
     memset(&app, 0, sizeof(app));
+
+    load_api_config();
 
     if(api_login() != 0) {
         fprintf(stderr, "API login failed\n");
