@@ -7,7 +7,7 @@ curl -fsSL https://raw.githubusercontent.com/SnowWoolf/SMART_OPC_UA/main/um_opcu
 
 ### Конфигурационные файлы
 
-#### config/API.cfg
+#### ../config/API.cfg
 
 сетевые настройки API
 ```
@@ -16,9 +16,10 @@ LOGIN=admin
 PASSWORD=admin
 PROTOCOL=40
 ```
-#### config/tags.csv
+#### ../config/tags.csv
 
 Таблица тегов
+
 Заголовки: Тип устройства,Тип показаний,Тег API,Тег SCADA,Kind,ValueType
 
 - Тип устройства - кодовый *номер* устройства из таблицы ПУ УМ (`"type":`)
