@@ -27,6 +27,36 @@ apt-get install -y \
     pkg-config \
     libcjson-dev \
     libcurl4-openssl-dev
+	
+echo "==> Installing open62541"
+
+OPEN62541_VERSION="v1.5.2"
+
+if [ ! -f /usr/local/lib/cmake/open62541/open62541Config.cmake ] && \
+   [ ! -f /usr/lib/cmake/open62541/open62541Config.cmake ]; then
+
+    TMP_DIR="/tmp/open62541-build"
+    rm -rf "${TMP_DIR}"
+    mkdir -p "${TMP_DIR}"
+
+    git clone --branch "${OPEN62541_VERSION}" --depth 1 https://github.com/open62541/open62541.git "${TMP_DIR}/src"
+
+    mkdir -p "${TMP_DIR}/src/build"
+    cd "${TMP_DIR}/src/build"
+
+    cmake .. \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DUA_ENABLE_HISTORIZING=ON \
+        -DBUILD_SHARED_LIBS=ON
+
+    make -j"$(nproc)"
+    make install
+    ldconfig
+
+    rm -rf "${TMP_DIR}"
+else
+    echo "==> open62541 already installed"
+fi
 
 echo "==> Preparing directories"
 mkdir -p "${INSTALL_DIR}"
