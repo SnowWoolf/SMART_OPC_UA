@@ -9,7 +9,9 @@ curl -fsSL https://raw.githubusercontent.com/SnowWoolf/SMART_OPC_UA/main/um_opcu
 
 #### ../config/API.cfg
 
-сетевые настройки API
+сетевые настройки API-сервера
+
+По-умолчанию:
 ```
 URL=http://localhost
 LOGIN=admin
@@ -67,11 +69,14 @@ PROTOCOL=40
 
 ---
 ---
+## Развертывание вручную
 
+### Установка зависимостей
 ```
 sudo apt update
 sudo apt install -y git build-essential gcc pkg-config cmake python3 libcurl4-openssl-dev libcjson-dev
 ```
+### Скачивание библиотеки
 ```
 cd ~
 git clone https://github.com/open62541/open62541.git
@@ -84,6 +89,7 @@ make -j"$(nproc)"
 sudo make install
 sudo ldconfig
 ```
+### Загрузка файлов проекта
 ```
 cd ~
 mkdir -p um_opcua/src
