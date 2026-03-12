@@ -1,4 +1,67 @@
 # SMART_OPC_UA
+
+## Установка/обновление одной командой:
+```
+curl -fsSL https://raw.githubusercontent.com/SnowWoolf/SMART_OPC_UA/main/um_opcua/deploy.sh | bash
+```
+
+### Конфигурационные файлы
+
+#### config/tags.csv
+
+описание OPC тегов
+
+`device_type,measure,api_tag,display`
+
+#### config/API.cfg
+
+сетевые настройки API
+```
+URL=http://localhost
+LOGIN=admin
+PASSWORD=admin
+PROTOCOL=40
+```
+
+---
+### Пояснения к новому tags.csv
+
+
+`Kind`
+
+Определяет, как OPC-сервер должен работать с тегом.
+
+Допустимые значения:
+
+- `current` — текущее значение, читается обычным OPC UA Read
+
+- `history` — исторический параметр, читается через OPC UA HistoryRead
+
+Примеры:
+
+- напряжение, ток, текущее время → `current`
+
+- энергия на начало суток, энергия на начало месяца, профиль мощности → `history`
+
+`ValueType`
+
+Определяет, какого типа данные у тега.
+
+Допустимые значения:
+
+- `double` — обычное числовое значение
+
+- `datetime` — дата и время
+
+Примеры:
+
+- напряжение, ток, энергия, мощность → `double`
+
+- время счетчика (`GetTime`) → `datetime`
+
+---
+---
+
 ```
 sudo apt update
 sudo apt install -y git build-essential gcc pkg-config cmake python3 libcurl4-openssl-dev libcjson-dev
@@ -188,57 +251,3 @@ API /meter/data/arch
    ↓
 UA_DataValue[]
 ```
-
-#### Конфигурационные файлы
-
-##### config/tags.csv
-
-описание OPC тегов
-
-`device_type,measure,api_tag,display`
-
-##### config/API.cfg
-
-сетевые настройки API
-```
-URL=http://localhost
-LOGIN=admin
-PASSWORD=admin
-PROTOCOL=40
-```
-
----
-### Пояснения к новому tags.csv
-
-
-`Kind`
-
-Определяет, как OPC-сервер должен работать с тегом.
-
-Допустимые значения:
-
-- `current` — текущее значение, читается обычным OPC UA Read
-
-- `history` — исторический параметр, читается через OPC UA HistoryRead
-
-Примеры:
-
-- напряжение, ток, текущее время → `current`
-
-- энергия на начало суток, энергия на начало месяца, профиль мощности → `history`
-
-`ValueType`
-
-Определяет, какого типа данные у тега.
-
-Допустимые значения:
-
-- `double` — обычное числовое значение
-
-- `datetime` — дата и время
-
-Примеры:
-
-- напряжение, ток, энергия, мощность → `double`
-
-- время счетчика (`GetTime`) → `datetime`
