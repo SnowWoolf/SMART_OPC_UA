@@ -25,8 +25,7 @@ extern char PROTOCOL[STRSZ];
 typedef enum {
     TAGKIND_UNKNOWN = 0,
     TAGKIND_CURRENT,
-    TAGKIND_HISTORY_DAY,
-    TAGKIND_HISTORY_MONTH
+    TAGKIND_HISTORY
 } TagKind;
 
 typedef enum {

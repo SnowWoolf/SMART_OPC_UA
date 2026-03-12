@@ -45,13 +45,15 @@ readCurrentValue(UA_Server *server,
             dataValue->hasSourceTimestamp = true;
             dataValue->sourceTimestamp = UA_DateTime_now();
         }
+
         return UA_STATUSCODE_GOOD;
     }
 
     if(isInternalSession(sessionId)) {
         if(ctx->value_type == VALTYPE_DATETIME) {
             if(ctx->has_last_dt_value) {
-                UA_Variant_setScalarCopy(&dataValue->value, &ctx->last_dt_value,
+                UA_Variant_setScalarCopy(&dataValue->value,
+                                         &ctx->last_dt_value,
                                          &UA_TYPES[UA_TYPES_DATETIME]);
                 dataValue->hasValue = true;
                 dataValue->status = UA_STATUSCODE_GOOD;
@@ -60,7 +62,8 @@ readCurrentValue(UA_Server *server,
             }
         } else {
             if(ctx->has_last_value) {
-                UA_Variant_setScalarCopy(&dataValue->value, &ctx->last_value,
+                UA_Variant_setScalarCopy(&dataValue->value,
+                                         &ctx->last_value,
                                          &UA_TYPES[UA_TYPES_DOUBLE]);
                 dataValue->hasValue = true;
                 dataValue->status = UA_STATUSCODE_GOOD;
@@ -85,13 +88,15 @@ readCurrentValue(UA_Server *server,
             ctx->last_dt_value = dt;
             ctx->has_last_dt_value = true;
 
-            UA_Variant_setScalarCopy(&dataValue->value, &dt,
+            UA_Variant_setScalarCopy(&dataValue->value,
+                                     &dt,
                                      &UA_TYPES[UA_TYPES_DATETIME]);
             dataValue->hasValue = true;
             dataValue->status = UA_STATUSCODE_GOOD;
         } else {
             if(ctx->has_last_dt_value) {
-                UA_Variant_setScalarCopy(&dataValue->value, &ctx->last_dt_value,
+                UA_Variant_setScalarCopy(&dataValue->value,
+                                         &ctx->last_dt_value,
                                          &UA_TYPES[UA_TYPES_DATETIME]);
                 dataValue->hasValue = true;
             }
@@ -99,19 +104,24 @@ readCurrentValue(UA_Server *server,
         }
     } else {
         double value = 0.0;
-        int rc = api_read_current_double(ctx->meter_id, ctx->measure, ctx->api_tag, &value);
+        int rc = api_read_current_double(ctx->meter_id,
+                                         ctx->measure,
+                                         ctx->api_tag,
+                                         &value);
 
         if(rc == 0) {
             ctx->last_value = value;
             ctx->has_last_value = true;
 
-            UA_Variant_setScalarCopy(&dataValue->value, &value,
+            UA_Variant_setScalarCopy(&dataValue->value,
+                                     &value,
                                      &UA_TYPES[UA_TYPES_DOUBLE]);
             dataValue->hasValue = true;
             dataValue->status = UA_STATUSCODE_GOOD;
         } else {
             if(ctx->has_last_value) {
-                UA_Variant_setScalarCopy(&dataValue->value, &ctx->last_value,
+                UA_Variant_setScalarCopy(&dataValue->value,
+                                         &ctx->last_value,
                                          &UA_TYPES[UA_TYPES_DOUBLE]);
                 dataValue->hasValue = true;
             }
@@ -201,6 +211,8 @@ create_opc_nodes(UA_Server *server,
             if(map->device_type != meter->type)
                 continue;
 
+            UA_Boolean is_history = (map->kind == TAGKIND_HISTORY);
+
             TagContext *ctx = (TagContext *)UA_malloc(sizeof(TagContext));
             if(!ctx)
                 continue;
@@ -234,24 +246,28 @@ create_opc_nodes(UA_Server *server,
             UA_VariableAttributes vAttr = UA_VariableAttributes_default;
             vAttr.displayName = UA_LOCALIZEDTEXT_ALLOC("ru-RU", map->display);
             vAttr.accessLevel = UA_ACCESSLEVELMASK_READ;
-			vAttr.userAccessLevel = UA_ACCESSLEVELMASK_READ;
+            vAttr.userAccessLevel = UA_ACCESSLEVELMASK_READ;
 
-			if(map->kind != TAGKIND_CURRENT) {
-				vAttr.accessLevel |= UA_ACCESSLEVELMASK_HISTORYREAD;
-				vAttr.userAccessLevel |= UA_ACCESSLEVELMASK_HISTORYREAD;
-			}
+            if(is_history) {
+                vAttr.accessLevel |= UA_ACCESSLEVELMASK_HISTORYREAD;
+                vAttr.userAccessLevel |= UA_ACCESSLEVELMASK_HISTORYREAD;
+            }
 
-			vAttr.valueRank = -1;
-			vAttr.historizing = (map->kind != TAGKIND_CURRENT);
+            vAttr.valueRank = -1;
+            vAttr.historizing = is_history;
 
             if(map->value_type == VALTYPE_DATETIME) {
                 UA_DateTime initDt = UA_DateTime_now();
                 vAttr.dataType = UA_TYPES[UA_TYPES_DATETIME].typeId;
-                UA_Variant_setScalarCopy(&vAttr.value, &initDt, &UA_TYPES[UA_TYPES_DATETIME]);
+                UA_Variant_setScalarCopy(&vAttr.value,
+                                         &initDt,
+                                         &UA_TYPES[UA_TYPES_DATETIME]);
             } else {
                 double initValue = 0.0;
                 vAttr.dataType = UA_TYPES[UA_TYPES_DOUBLE].typeId;
-                UA_Variant_setScalarCopy(&vAttr.value, &initValue, &UA_TYPES[UA_TYPES_DOUBLE]);
+                UA_Variant_setScalarCopy(&vAttr.value,
+                                         &initValue,
+                                         &UA_TYPES[UA_TYPES_DOUBLE]);
             }
 
             retval = UA_Server_addVariableNode(
@@ -299,7 +315,7 @@ create_opc_nodes(UA_Server *server,
                 continue;
             }
 
-            if(map->kind != TAGKIND_CURRENT)
+            if(is_history)
                 opc_history_register_node(server, ctx);
 
             printf("TAG CREATED: meter_id=%d type=%d measure=%s api_tag=%s display=%s kind=%d\n",

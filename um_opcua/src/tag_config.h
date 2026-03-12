@@ -12,7 +12,7 @@ UA_Boolean has_mapping_for_device_type(const TagMapping *mappings,
                                        size_t mapping_count,
                                        int device_type);
 
-TagKind detect_tag_kind(const char *measure);
-ValueType detect_value_type(const char *measure);
+TagKind parse_tag_kind(const char *s);
+ValueType parse_value_type(const char *s);
 
 #endif

@@ -8,12 +8,15 @@ static void
 trim(char *s) {
     size_t len = strlen(s);
     while(len > 0 &&
-          (s[len - 1] == '\n' || s[len - 1] == '\r' || s[len - 1] == ' ' || s[len - 1] == '\t'))
+          (s[len - 1] == '\n' || s[len - 1] == '\r' ||
+           s[len - 1] == ' '  || s[len - 1] == '\t'))
         s[--len] = '\0';
 }
 
 static int
-split_csv4(char *line, char **c1, char **c2, char **c3, char **c4) {
+split_csv6(char *line,
+           char **c1, char **c2, char **c3,
+           char **c4, char **c5, char **c6) {
     char *p1 = line;
     char *p2 = strchr(p1, ',');
     if(!p2) return 0;
@@ -27,36 +30,44 @@ split_csv4(char *line, char **c1, char **c2, char **c3, char **c4) {
     if(!p4) return 0;
     *p4 = '\0'; p4++;
 
+    char *p5 = strchr(p4, ',');
+    if(!p5) return 0;
+    *p5 = '\0'; p5++;
+
+    char *p6 = strchr(p5, ',');
+    if(!p6) return 0;
+    *p6 = '\0'; p6++;
+
     *c1 = p1;
     *c2 = p2;
     *c3 = p3;
     *c4 = p4;
+    *c5 = p5;
+    *c6 = p6;
     return 1;
 }
 
 TagKind
-detect_tag_kind(const char *measure) {
-    if(!measure || !measure[0])
+parse_tag_kind(const char *s) {
+    if(!s || !s[0])
         return TAGKIND_UNKNOWN;
 
-    if(strcmp(measure, "GetTime") == 0)
+    if(strcmp(s, "current") == 0)
         return TAGKIND_CURRENT;
 
-    if(strncmp(measure, "ElMoment", 8) == 0)
-        return TAGKIND_CURRENT;
+    if(strcmp(s, "history") == 0)
+        return TAGKIND_HISTORY;
 
-    if(strncmp(measure, "ElDay", 5) == 0)
-        return TAGKIND_HISTORY_DAY;
-
-    if(strncmp(measure, "ElMonth", 7) == 0)
-        return TAGKIND_HISTORY_MONTH;
 
     return TAGKIND_UNKNOWN;
 }
 
 ValueType
-detect_value_type(const char *measure) {
-    if(measure && strcmp(measure, "GetTime") == 0)
+parse_value_type(const char *s) {
+    if(!s || !s[0])
+        return VALTYPE_DOUBLE;
+
+    if(strcmp(s, "datetime") == 0)
         return VALTYPE_DATETIME;
 
     return VALTYPE_DOUBLE;
@@ -76,7 +87,7 @@ load_mapping_csv(const char *filename,
         return -1;
     }
 
-    char line[512];
+    char line[1024];
 
     if(!fgets(line, sizeof(line), f)) {
         fclose(f);
@@ -90,8 +101,8 @@ load_mapping_csv(const char *filename,
         if(line[0] == '\0')
             continue;
 
-        char *col1, *col2, *col3, *col4;
-        if(!split_csv4(line, &col1, &col2, &col3, &col4))
+        char *col1, *col2, *col3, *col4, *col5, *col6;
+        if(!split_csv6(line, &col1, &col2, &col3, &col4, &col5, &col6))
             continue;
 
         TagMapping *m = &mappings[count];
@@ -102,8 +113,8 @@ load_mapping_csv(const char *filename,
         strncpy(m->api_tag, col3, sizeof(m->api_tag) - 1);
         strncpy(m->display, col4, sizeof(m->display) - 1);
 
-        m->kind = detect_tag_kind(m->measure);
-        m->value_type = detect_value_type(m->measure);
+        m->kind = parse_tag_kind(col5);
+        m->value_type = parse_value_type(col6);
 
         if(m->kind == TAGKIND_UNKNOWN)
             continue;
