@@ -7,12 +7,6 @@ curl -fsSL https://raw.githubusercontent.com/SnowWoolf/SMART_OPC_UA/main/um_opcu
 
 ### Конфигурационные файлы
 
-#### config/tags.csv
-
-описание OPC тегов
-
-`device_type,measure,api_tag,display`
-
 #### config/API.cfg
 
 сетевые настройки API
@@ -22,7 +16,18 @@ LOGIN=admin
 PASSWORD=admin
 PROTOCOL=40
 ```
+#### config/tags.csv
 
+Таблица тегов
+Заголовки: Тип устройства,Тип показаний,Тег API,Тег SCADA,Kind,ValueType
+
+- Тип устройства - кодовый *номер* устройства из таблицы ПУ УМ (`"type":`)
+- Тип показаний - `"measure":` в строке JSON запроса веб УМ
+- Тег API - `"tag":` в строке JSON запроса веб УМ
+- Тег SCADA - имя тега которое будет отображаться в дереве объектов
+- Kind - Определяет, как OPC-сервер должен работать с тегом (текущие показания или исторические)
+- ValueType - Определяет, какого типа данные у тега (число, строка, дата, ...)
+ 
 ---
 ### Пояснения к новому tags.csv
 
