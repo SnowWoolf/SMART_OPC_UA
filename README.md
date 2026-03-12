@@ -7,7 +7,7 @@ curl -fsSL https://raw.githubusercontent.com/SnowWoolf/SMART_OPC_UA/main/um_opcu
 
 ### Конфигурационные файлы
 
-#### ../config/API.cfg
+#### /opt/um_opcua/config/API.cfg
 
 сетевые настройки API-сервера
 
@@ -18,7 +18,7 @@ LOGIN=admin
 PASSWORD=admin
 PROTOCOL=40
 ```
-#### ../config/tags.csv
+#### /opt/um_opcua/config/tags.csv
 
 Таблица тегов
 
