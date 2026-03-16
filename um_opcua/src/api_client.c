@@ -23,8 +23,32 @@ write_callback(void *contents, size_t size, size_t nmemb, void *userp) {
     return realsize;
 }
 
+static UA_Boolean
+response_looks_like_auth_error(int http_code, const char *response) {
+    if(http_code == 401 || http_code == 403)
+        return true;
+
+    if(!response)
+        return false;
+
+    if(strstr(response, "unauthorized")) return true;
+    if(strstr(response, "Unauthorized")) return true;
+    if(strstr(response, "forbidden")) return true;
+    if(strstr(response, "Forbidden")) return true;
+
+    if(strstr(response, "\"error\"")) {
+        if(strstr(response, "auth")) return true;
+        if(strstr(response, "login")) return true;
+        if(strstr(response, "session")) return true;
+        if(strstr(response, "token")) return true;
+        if(strstr(response, "cookie")) return true;
+    }
+
+    return false;
+}
+
 static int
-http_post_json(const char *url, const char *json, int with_protocol_header, char **response_out) {
+http_post_json_once(const char *url, const char *json, int with_protocol_header, char **response_out) {
     CURL *curl = curl_easy_init();
     if(!curl)
         return -1;
@@ -38,7 +62,7 @@ http_post_json(const char *url, const char *json, int with_protocol_header, char
     headers = curl_slist_append(headers, "Accept: application/json");
 
     if(with_protocol_header) {
-        char protocol_header[64];
+        char protocol_header[256];
         snprintf(protocol_header, sizeof(protocol_header), "X-Protocol-USPD: %s", PROTOCOL);
         headers = curl_slist_append(headers, protocol_header);
         headers = curl_slist_append(headers, "X-Requested-With: XMLHttpRequest");
@@ -73,7 +97,7 @@ http_post_json(const char *url, const char *json, int with_protocol_header, char
 }
 
 static int
-http_get_json(const char *url, const char *protocol, char **response_out) {
+http_get_json_once(const char *url, const char *protocol, char **response_out) {
     CURL *curl = curl_easy_init();
     if(!curl)
         return -1;
@@ -83,7 +107,7 @@ http_get_json(const char *url, const char *protocol, char **response_out) {
     chunk.size = 0;
 
     struct curl_slist *headers = NULL;
-    char protocol_header[64];
+    char protocol_header[256];
     snprintf(protocol_header, sizeof(protocol_header), "X-Protocol-USPD: %s", protocol);
     headers = curl_slist_append(headers, protocol_header);
     headers = curl_slist_append(headers, "Accept: application/json");
@@ -113,6 +137,50 @@ http_get_json(const char *url, const char *protocol, char **response_out) {
 
     *response_out = chunk.data;
     return (int)http_code;
+}
+
+static int
+http_post_json(const char *url, const char *json, int with_protocol_header, char **response_out) {
+    int code = http_post_json_once(url, json, with_protocol_header, response_out);
+
+    if(code < 0)
+        return code;
+
+    if(response_looks_like_auth_error(code, *response_out)) {
+        free(*response_out);
+        *response_out = NULL;
+
+        printf("HTTP POST auth expired, re-login...\n");
+
+        if(api_login() != 0)
+            return -1;
+
+        code = http_post_json_once(url, json, with_protocol_header, response_out);
+    }
+
+    return code;
+}
+
+static int
+http_get_json(const char *url, const char *protocol, char **response_out) {
+    int code = http_get_json_once(url, protocol, response_out);
+
+    if(code < 0)
+        return code;
+
+    if(response_looks_like_auth_error(code, *response_out)) {
+        free(*response_out);
+        *response_out = NULL;
+
+        printf("HTTP GET auth expired, re-login...\n");
+
+        if(api_login() != 0)
+            return -1;
+
+        code = http_get_json_once(url, protocol, response_out);
+    }
+
+    return code;
 }
 
 UA_Boolean
@@ -156,16 +224,18 @@ parse_iso_datetime_to_ua(const char *iso, UA_DateTime *out_dt) {
 
 int
 api_login(void) {
-    char url[256];
+    remove("cookies.txt");
+
+    char url[512];
     snprintf(url, sizeof(url), "%s/auth", API_URL);
 
-    char payload[256];
+    char payload[512];
     snprintf(payload, sizeof(payload),
              "{\"login\":\"%s\",\"password\":\"%s\"}",
              LOGIN, PASSWORD);
 
     char *response = NULL;
-    int code = http_post_json(url, payload, 0, &response);
+    int code = http_post_json_once(url, payload, 0, &response);
 
     printf("Login status: %d\n", code);
     if(response) {
@@ -181,7 +251,7 @@ api_get_meters(MeterInfo *meters, size_t max_meters, size_t *out_count) {
     if(!meters || !out_count)
         return -1;
 
-    char url[256];
+    char url[512];
     snprintf(url, sizeof(url), "%s/settings/meter/table", API_URL);
 
     char *response = NULL;
@@ -260,10 +330,10 @@ api_read_current_double(int meter_id,
     if(!measure || !tag || !out_value)
         return -1;
 
-    char url[256];
+    char url[512];
     snprintf(url, sizeof(url), "%s/meter/data/moment", API_URL);
 
-    char payload[512];
+    char payload[1024];
     snprintf(payload, sizeof(payload),
              "{\"ids\":[%d],\"measures\":[\"%s\"],\"tags\":[\"%s\"]}",
              meter_id, measure, tag);
@@ -316,10 +386,10 @@ api_read_current_datetime(int meter_id, UA_DateTime *out_dt) {
     if(!out_dt)
         return -1;
 
-    char url[256];
+    char url[512];
     snprintf(url, sizeof(url), "%s/meter/data/moment", API_URL);
 
-    char payload[256];
+    char payload[512];
     snprintf(payload, sizeof(payload),
              "{\"ids\":[%d],\"measures\":[\"GetTime\"],\"tags\":[]}",
              meter_id);
@@ -364,7 +434,7 @@ api_read_archive(int meter_id,
     if(!measure || !tag || !out)
         return -1;
 
-    char url[256];
+    char url[512];
     snprintf(url, sizeof(url), "%s/meter/data/arch", API_URL);
 
     char payload[1024];
