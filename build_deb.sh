@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PKG_NAME="um-opcua"
-PKG_VERSION="${PKG_VERSION:-1.0.0}"
+PKG_VERSION="${PKG_VERSION:-1.0}"
 PKG_RELEASE="${PKG_RELEASE:-1}"
 ARCH="$(dpkg --print-architecture)"
 
@@ -214,7 +214,7 @@ ${ETC_CONFIG_DIR}/tags.csv
 EOF
 
 echo "==> Creating postinst"
-cat > "${DEBIAN_DIR}/postinst" <<'EOF'
+cat > "${DEBIAN_DIR}/postinst" <<EOF
 #!/usr/bin/env bash
 set -e
 
@@ -222,11 +222,18 @@ mkdir -p /opt/um_opcua/build
 mkdir -p /opt/um_opcua/lib
 mkdir -p /etc/um_opcua
 
+echo "OPC UA postinst started"
+
 if command -v systemctl >/dev/null 2>&1; then
     systemctl daemon-reload || true
     systemctl enable um_opcua.service || true
     systemctl restart um_opcua.service || true
 fi
+
+# Эта строка попадет в краткий лог обновлений в web UI
+echo "OPC_UA_${PKG_VERSION}" > /opt/uspd/swupd/version
+
+echo "OPC UA installed successfully"
 
 exit 0
 EOF
