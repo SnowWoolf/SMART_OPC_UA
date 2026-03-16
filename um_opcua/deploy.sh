@@ -52,7 +52,8 @@ if [ ! -f /usr/local/lib/cmake/open62541/open62541Config.cmake ] && \
     make -j"$(nproc)"
     make install
     ldconfig
-
+	
+    cd /
     rm -rf "${TMP_DIR}"
 else
     echo "==> open62541 already installed"
