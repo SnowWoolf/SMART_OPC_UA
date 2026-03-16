@@ -71,7 +71,7 @@ if [ ! -f /usr/local/lib/cmake/open62541/open62541Config.cmake ] && \
     make -j"$(nproc)"
     make install
     ldconfig || true
-
+    cd /
     rm -rf "${TMP_DIR}"
 else
     echo "==> open62541 already installed"
@@ -151,13 +151,13 @@ copy_one_with_symlinks() {
 }
 
 copy_matching_libs() {
-    local found=0
+    local found=1
     for pattern in "$@"; do
         for f in $pattern; do
             [ -e "$f" ] || continue
             echo "    + $f"
             copy_one_with_symlinks "$f"
-            found=1
+            found=0
         done
     done
     return $found
