@@ -74,7 +74,7 @@ PROTOCOL=40
 
 ```
 chmod +x build_deb.sh
-PKG_VERSION=1.0 ./build_deb.sh
+PKG_VERSION=1.0.0 ./build_deb.sh
 ```
 PKG_VERSION - указать актуальную версию для пакета
 
