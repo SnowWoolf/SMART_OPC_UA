@@ -71,7 +71,7 @@ PROTOCOL=40
 
 ## Сборка deb-пакета
 
-(указать правильную версию)
+(указать версию для пакета)
 ```
 chmod +x build_deb.sh
 PKG_VERSION=1.0.1 ./build_deb.sh
