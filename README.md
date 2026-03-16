@@ -4,6 +4,7 @@
 ```
 curl -fsSL https://raw.githubusercontent.com/SnowWoolf/SMART_OPC_UA/main/um_opcua/deploy.sh | bash
 ```
+Сервис запустится под именем `um_opcua`
 
 ### Конфигурационные файлы
 
