@@ -68,6 +68,15 @@ PROTOCOL=40
 - время счетчика (`GetTime`) → `datetime`
 
 ---
+
+## Сборка deb-пакета
+
+(указать правильную версию)
+```
+chmod +x build_deb.sh
+PKG_VERSION=1.0.1 ./build_deb.sh
+```
+---
 ---
 ## Развертывание вручную
 
