@@ -78,5 +78,6 @@ PKG_VERSION=1.0 ./build_deb.sh
 ```
 PKG_VERSION - указать актуальную версию для пакета
 
-
+Установка:
+`sudo dpkg -i имя_пакета.deb`
 ---
