@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PKG_NAME="um-opcua"
-PKG_VERSION="${PKG_VERSION:-1.0}"
+PKG_VERSION="${PKG_VERSION:-1.0.0}"
 PKG_RELEASE="${PKG_RELEASE:-1}"
 ARCH="$(dpkg --print-architecture)"
 
@@ -127,7 +127,7 @@ EOF
 echo "==> Creating config symlink"
 ln -sfn /etc/um_opcua "${PKG_ROOT}${INSTALL_CONFIG_LINK}"
 
-echo "==> Collecting only bundled runtime libraries"
+echo "==> Collecting bundled runtime libraries"
 
 copy_one_with_symlinks() {
     local source="$1"
@@ -150,24 +150,45 @@ copy_one_with_symlinks() {
     done
 }
 
-OPEN62541_FOUND=0
+copy_matching_libs() {
+    local found=0
+    for pattern in "$@"; do
+        for f in $pattern; do
+            [ -e "$f" ] || continue
+            echo "    + $f"
+            copy_one_with_symlinks "$f"
+            found=1
+        done
+    done
+    return $found
+}
 
-for pattern in \
+OPEN62541_FOUND=0
+CJSON_FOUND=0
+
+if copy_matching_libs \
     /usr/local/lib/libopen62541.so* \
     /usr/lib/libopen62541.so* \
     /usr/lib/arm-linux-gnueabihf/libopen62541.so* \
-    /lib/arm-linux-gnueabihf/libopen62541.so*
-do
-    for f in $pattern; do
-        [ -e "$f" ] || continue
-        echo "    + $f"
-        copy_one_with_symlinks "$f"
-        OPEN62541_FOUND=1
-    done
-done
+    /lib/arm-linux-gnueabihf/libopen62541.so*; then
+    OPEN62541_FOUND=1
+fi
+
+if copy_matching_libs \
+    /usr/local/lib/libcjson.so* \
+    /usr/lib/libcjson.so* \
+    /usr/lib/arm-linux-gnueabihf/libcjson.so* \
+    /lib/arm-linux-gnueabihf/libcjson.so*; then
+    CJSON_FOUND=1
+fi
 
 if [ "${OPEN62541_FOUND}" -ne 1 ]; then
     echo "ERROR: libopen62541.so* not found"
+    exit 1
+fi
+
+if [ "${CJSON_FOUND}" -ne 1 ]; then
+    echo "ERROR: libcjson.so* not found"
     exit 1
 fi
 
@@ -201,7 +222,7 @@ Section: utils
 Priority: optional
 Architecture: ${ARCH}
 Maintainer: Valery <valery@example.local>
-Depends: libc6, libgcc-s1, libstdc++6, libcurl4, libcjson1
+Depends: libc6, libgcc-s1, libstdc++6, libcurl4
 Description: SMART OPC UA Server
  OPC UA server for SMART / UM platform.
 Installed-Size: ${INSTALLED_SIZE}
@@ -214,7 +235,7 @@ ${ETC_CONFIG_DIR}/tags.csv
 EOF
 
 echo "==> Creating postinst"
-cat > "${DEBIAN_DIR}/postinst" <<EOF
+cat > "${DEBIAN_DIR}/postinst" <<'EOF'
 #!/usr/bin/env bash
 set -e
 
@@ -222,18 +243,11 @@ mkdir -p /opt/um_opcua/build
 mkdir -p /opt/um_opcua/lib
 mkdir -p /etc/um_opcua
 
-echo "OPC UA postinst started"
-
 if command -v systemctl >/dev/null 2>&1; then
     systemctl daemon-reload || true
     systemctl enable um_opcua.service || true
     systemctl restart um_opcua.service || true
 fi
-
-# Эта строка попадет в краткий лог обновлений в web UI
-echo "OPC_UA_${PKG_VERSION}" > /opt/uspd/swupd/version
-
-echo "OPC UA installed successfully"
 
 exit 0
 EOF
@@ -291,6 +305,9 @@ echo
 echo "Inspect package:"
 echo "    dpkg-deb -I ${OUTPUT_DEB}"
 echo "    dpkg-deb -c ${OUTPUT_DEB}"
+echo
+echo "Check runtime linkage:"
+echo "    LD_LIBRARY_PATH=${INSTALL_LIB_DIR} ldd ${INSTALL_BIN_DIR}/um_opcua"
 echo
 echo "Check service:"
 echo "    systemctl status ${SERVICE_NAME} --no-pager"
