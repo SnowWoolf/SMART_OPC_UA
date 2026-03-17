@@ -220,6 +220,7 @@ create_opc_nodes(UA_Server *server,
             memset(ctx, 0, sizeof(*ctx));
             ctx->meter_id = meter->id;
             ctx->device_type = meter->type;
+            ctx->channel = map->channel;
             strncpy(ctx->meter_name, meterDisplay, sizeof(ctx->meter_name) - 1);
             strncpy(ctx->measure, map->measure, sizeof(ctx->measure) - 1);
             strncpy(ctx->api_tag, map->api_tag, sizeof(ctx->api_tag) - 1);
@@ -236,10 +237,16 @@ create_opc_nodes(UA_Server *server,
 
             char varNodeIdStr[384];
             snprintf(varNodeIdStr, sizeof(varNodeIdStr),
-                     "%s|%s|%d", map->measure, safeTag, meter->id);
+                     "%s|%s|ch%d|%d", map->measure, safeTag, map->channel, meter->id);
 
             UA_NodeId varNodeId = UA_NODEID_STRING(nsIdx, varNodeIdStr);
-            ctx->nodeId = varNodeId;
+
+            if(UA_NodeId_copy(&varNodeId, &ctx->nodeId) != UA_STATUSCODE_GOOD) {
+                printf("TAG FAILED (nodeid copy): meter_id=%d measure=%s api_tag=%s display=%s\n",
+                       meter->id, map->measure, map->api_tag, map->display);
+                UA_free(ctx);
+                continue;
+            }
 
             UA_QualifiedName qn = UA_QUALIFIEDNAME_ALLOC(nsIdx, map->display);
 
@@ -287,22 +294,26 @@ create_opc_nodes(UA_Server *server,
                        meter->id, map->measure, map->api_tag, map->display, retval);
                 UA_QualifiedName_clear(&qn);
                 UA_VariableAttributes_clear(&vAttr);
+                UA_NodeId_clear(&ctx->nodeId);
                 UA_free(ctx);
                 continue;
             }
 
-            UA_DataSource ds;
-            ds.read = readCurrentValue;
-            ds.write = NULL;
+            if(!is_history) {
+                UA_DataSource ds;
+                ds.read = readCurrentValue;
+                ds.write = NULL;
 
-            retval = UA_Server_setVariableNode_dataSource(server, varNodeId, ds);
-            if(retval != UA_STATUSCODE_GOOD) {
-                printf("TAG FAILED (set datasource): meter_id=%d measure=%s api_tag=%s display=%s status=0x%08x\n",
-                       meter->id, map->measure, map->api_tag, map->display, retval);
-                UA_QualifiedName_clear(&qn);
-                UA_VariableAttributes_clear(&vAttr);
-                UA_free(ctx);
-                continue;
+                retval = UA_Server_setVariableNode_dataSource(server, varNodeId, ds);
+                if(retval != UA_STATUSCODE_GOOD) {
+                    printf("TAG FAILED (set datasource): meter_id=%d measure=%s api_tag=%s display=%s status=0x%08x\n",
+                           meter->id, map->measure, map->api_tag, map->display, retval);
+                    UA_QualifiedName_clear(&qn);
+                    UA_VariableAttributes_clear(&vAttr);
+                    UA_NodeId_clear(&ctx->nodeId);
+                    UA_free(ctx);
+                    continue;
+                }
             }
 
             retval = UA_Server_setNodeContext(server, varNodeId, ctx);
@@ -311,6 +322,7 @@ create_opc_nodes(UA_Server *server,
                        meter->id, map->measure, map->api_tag, map->display, retval);
                 UA_QualifiedName_clear(&qn);
                 UA_VariableAttributes_clear(&vAttr);
+                UA_NodeId_clear(&ctx->nodeId);
                 UA_free(ctx);
                 continue;
             }
@@ -318,8 +330,8 @@ create_opc_nodes(UA_Server *server,
             if(is_history)
                 opc_history_register_node(server, ctx);
 
-            printf("TAG CREATED: meter_id=%d type=%d measure=%s api_tag=%s display=%s kind=%d\n",
-                   meter->id, meter->type, map->measure, map->api_tag, map->display, (int)map->kind);
+            printf("TAG CREATED: meter_id=%d type=%d channel=%d measure=%s api_tag=%s display=%s kind=%d\n",
+                   meter->id, meter->type, map->channel, map->measure, map->api_tag, map->display, (int)map->kind);
 
             UA_QualifiedName_clear(&qn);
             UA_VariableAttributes_clear(&vAttr);
