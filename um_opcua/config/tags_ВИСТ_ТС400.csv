@@ -241,7 +241,7 @@ device_type,channel,measure,api_tag,display,kind,value_type
 226,3,HeatHourIntegral,dT,Интегральный почасовой архив dT Разность температур,history,double
 226,3,HeatHourIntegral,tpow,Интегральный почасовой архив tpow Время отсутствия питания,history,double
 226,3,HeatHourIntegral,tall,Интегральный почасовой архив tall Общее учетное время,history,double
-226,3,HeatHourIntegral,tstop,Интегральный почасовой архив tstop Время простоя теплосистемы,history,doubledevice_type,channel,measure,api_tag,display,kind,value_type
+226,3,HeatHourIntegral,tstop,Интегральный почасовой архив tstop Время простоя теплосистемы,history,double
 226,1,HeatMoment,Q,Q Тепловая энергия подающий поток,current,double
 226,1,HeatMoment,Q2,Q Тепловая энергия обратный поток,current,double
 226,1,HeatMoment,Q3,Q Тепловая энергия поток подпитки,current,double
