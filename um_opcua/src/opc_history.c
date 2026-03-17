@@ -150,8 +150,6 @@ history_database_readRaw(UA_Server *server,
             reverse = true;
         }
 
-        ArchiveResult ar;
-        memset(&ar, 0, sizeof(ar));
 
         ArchiveResult ar;
         memset(&ar, 0, sizeof(ar));
