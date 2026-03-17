@@ -153,16 +153,20 @@ history_database_readRaw(UA_Server *server,
         ArchiveResult ar;
         memset(&ar, 0, sizeof(ar));
 
+        ArchiveResult ar;
+        memset(&ar, 0, sizeof(ar));
+
         if(api_read_archive(ctx->meter_id,
                             ctx->measure,
                             ctx->api_tag,
+                            ctx->channel,
                             (long)start_unix,
                             (long)end_unix,
                             &ar) != 0) {
-            response->results[i].statusCode = UA_STATUSCODE_BADNODATA;
-            continue;
+        response->results[i].statusCode = UA_STATUSCODE_BADNODATA;
+        continue;
         }
-
+        
         size_t limit = ar.count;
 
         if(historyReadDetails->numValuesPerNode > 0 &&
