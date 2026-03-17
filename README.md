@@ -85,13 +85,13 @@ PROTOCOL=40
 ## Сборка deb-пакета
 Собирать на УМ!
 
-Скачать на УМ build_deb.sh и выполнить:
+Скачать на УМ `build_deb.sh` и выполнить:
 
 ```
 chmod +x build_deb.sh
 PKG_VERSION=1.0.0 ./build_deb.sh
 ```
-PKG_VERSION - указать актуальную версию для пакета
+`PKG_VERSION=` - указать актуальную версию для пакета
 
 Установка:
 `sudo dpkg -i имя_пакета.deb`
