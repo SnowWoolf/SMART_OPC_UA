@@ -19,6 +19,8 @@ LOGIN=admin
 PASSWORD=admin
 PROTOCOL=40
 ```
+Поменять на актуальные данные доступа к веб-интерфейсу.
+
 #### /opt/um_opcua/config/tags.csv
 
 Таблица тегов
@@ -98,5 +100,7 @@ PKG_VERSION=1.0.0 ./build_deb.sh
 
 Удаление:
 `sudo dpkg -r um-opcua` (конфиги останутся)
+
 `sudo dpkg --purge um-opcua` (удаление вместе с конфигами)
+
 `sudo apt remove um-opcua` (удаление вместе с зависимостями)
