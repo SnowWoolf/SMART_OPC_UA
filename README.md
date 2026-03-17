@@ -93,3 +93,8 @@ PKG_VERSION - указать актуальную версию для пакет
 
 Установка:
 `sudo dpkg -i имя_пакета.deb`
+
+Удаление:
+`sudo dpkg -r um-opcua` (конфиги останутся)
+`sudo dpkg --purge um-opcua` (удаление вместе с конфигами)
+`sudo apt remove um-opcua` (удаление вместе с зависимостями)
