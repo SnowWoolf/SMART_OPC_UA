@@ -507,8 +507,11 @@ api_read_archive(int meter_id,
                     break;
 
                 cJSON *ch = cJSON_GetObjectItem(valItem, "channel");
-                if(!cJSON_IsNumber(ch) || ch->valueint != channel)
-                    continue;
+
+                if(channel > 0) {
+                    if(!cJSON_IsNumber(ch) || ch->valueint != channel)
+                        continue;
+                }
 
                 cJSON *ts = cJSON_GetObjectItem(valItem, "ts");
                 if(!cJSON_IsString(ts))
