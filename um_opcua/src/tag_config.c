@@ -14,9 +14,9 @@ trim(char *s) {
 }
 
 static int
-split_csv6(char *line,
+split_csv7(char *line,
            char **c1, char **c2, char **c3,
-           char **c4, char **c5, char **c6) {
+           char **c4, char **c5, char **c6, char **c7) {
     char *p1 = line;
     char *p2 = strchr(p1, ',');
     if(!p2) return 0;
@@ -38,12 +38,17 @@ split_csv6(char *line,
     if(!p6) return 0;
     *p6 = '\0'; p6++;
 
+    char *p7 = strchr(p6, ',');
+    if(!p7) return 0;
+    *p7 = '\0'; p7++;
+
     *c1 = p1;
     *c2 = p2;
     *c3 = p3;
     *c4 = p4;
     *c5 = p5;
     *c6 = p6;
+    *c7 = p7;
     return 1;
 }
 
@@ -57,7 +62,6 @@ parse_tag_kind(const char *s) {
 
     if(strcmp(s, "history") == 0)
         return TAGKIND_HISTORY;
-
 
     return TAGKIND_UNKNOWN;
 }
@@ -101,20 +105,22 @@ load_mapping_csv(const char *filename,
         if(line[0] == '\0')
             continue;
 
-        char *col1, *col2, *col3, *col4, *col5, *col6;
-        if(!split_csv6(line, &col1, &col2, &col3, &col4, &col5, &col6))
+        char *col1, *col2, *col3, *col4, *col5, *col6, *col7;
+        if(!split_csv7(line, &col1, &col2, &col3, &col4, &col5, &col6, &col7))
             continue;
 
         TagMapping *m = &mappings[count];
         memset(m, 0, sizeof(*m));
 
         m->device_type = atoi(col1);
-        strncpy(m->measure, col2, sizeof(m->measure) - 1);
-        strncpy(m->api_tag, col3, sizeof(m->api_tag) - 1);
-        strncpy(m->display, col4, sizeof(m->display) - 1);
+        m->channel = atoi(col2);  /* 0 = без канала */
 
-        m->kind = parse_tag_kind(col5);
-        m->value_type = parse_value_type(col6);
+        strncpy(m->measure, col3, sizeof(m->measure) - 1);
+        strncpy(m->api_tag, col4, sizeof(m->api_tag) - 1);
+        strncpy(m->display, col5, sizeof(m->display) - 1);
+
+        m->kind = parse_tag_kind(col6);
+        m->value_type = parse_value_type(col7);
 
         if(m->kind == TAGKIND_UNKNOWN)
             continue;
@@ -128,9 +134,10 @@ load_mapping_csv(const char *filename,
 
     printf("Mappings count: %zu\n", count);
     for(size_t i = 0; i < count; i++) {
-        printf("MAP[%zu]: type=%d measure=%s api_tag=%s display=%s kind=%d vtype=%d\n",
+        printf("MAP[%zu]: type=%d channel=%d measure=%s api_tag=%s display=%s kind=%d vtype=%d\n",
                i,
                mappings[i].device_type,
+               mappings[i].channel,
                mappings[i].measure,
                mappings[i].api_tag,
                mappings[i].display,
