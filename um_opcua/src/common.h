@@ -43,6 +43,7 @@ typedef struct {
 
 typedef struct {
     int device_type;
+    int channel;              /* 0 = без канала, >0 = номер канала */
     char measure[STRSZ];
     char api_tag[STRSZ];
     char display[STRSZ];
@@ -64,6 +65,8 @@ typedef struct {
 typedef struct {
     int meter_id;
     int device_type;
+    int channel;             /* 0 = без канала, >0 = номер канала */
+
     char meter_name[STRSZ];
 
     char measure[STRSZ];
