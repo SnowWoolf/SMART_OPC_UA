@@ -80,3 +80,246 @@ device_type,channel,measure,api_tag,display,kind,value_type
 226,1,HeatHourIntegral,tpow,Интегральный почасовой архив tpow Время отсутствия питания,history,double
 226,1,HeatHourIntegral,tall,Интегральный почасовой архив tall Общее учетное время,history,double
 226,1,HeatHourIntegral,tstop,Интегральный почасовой архив tstop Время простоя теплосистемы,history,double
+226,2,HeatMoment,Q,Q Тепловая энергия подающий поток,current,double
+226,2,HeatMoment,Q2,Q Тепловая энергия обратный поток,current,double
+226,2,HeatMoment,Q3,Q Тепловая энергия поток подпитки,current,double
+226,2,HeatMoment,V,V Объем теплоносителя подающий поток,current,double
+226,2,HeatMoment,V2,V Объем теплоносителя обратный поток,current,double
+226,2,HeatMoment,V3,V Объем теплоносителя поток подпитки,current,double
+226,2,HeatMoment,G,G Масса теплоносителя подающий поток,current,double
+226,2,HeatMoment,G2,G Масса теплоносителя обратный поток,current,double
+226,2,HeatMoment,G3,G Масса теплоносителя поток подпитки,current,double
+226,2,HeatMoment,CQ,CQ Тепловая мощность подающий поток,current,double
+226,2,HeatMoment,CQ2,CQ Тепловая мощность обратный поток,current,double
+226,2,HeatMoment,CQ3,CQ Тепловая мощность поток подпитки,current,double
+226,2,HeatMoment,CV,CV Расход теплоносителя подающий поток,current,double
+226,2,HeatMoment,CV2,CV Расход теплоносителя обратный поток,current,double
+226,2,HeatMoment,CV3,CV Расход теплоносителя поток подпитки,current,double
+226,2,HeatMoment,CG,CG Массовый расход подающий поток,current,double
+226,2,HeatMoment,CG2,CG Массовый расход обратный поток,current,double
+226,2,HeatMoment,CG3,CG Массовый расход поток подпитки,current,double
+226,2,HeatMoment,IV,IV Объем по импульсному входу 1,current,double
+226,2,HeatMoment,IV2,IV Объем по импульсному входу 2,current,double
+226,2,HeatMoment,IV3,IV Объем по импульсному входу 3,current,double
+226,2,HeatMoment,IV4,IV Объем по импульсному входу 4,current,double
+226,2,HeatMoment,T,T Температура подающий поток,current,double
+226,2,HeatMoment,T2,T Температура обратный поток,current,double
+226,2,HeatMoment,T3,T Температура поток подпитки,current,double
+226,2,HeatMoment,T4,T Температура окружающей среды,current,double
+226,2,HeatMoment,P,P Давление подающий поток,current,double
+226,2,HeatMoment,P2,P Давление обратный поток,current,double
+226,2,HeatMoment,P3,P Давление поток подпитки,current,double
+226,2,HeatMoment,Err,Err Флаги ошибок,current,double
+226,2,HeatMoment,Top,Top Наработка подсистемы,current,double
+226,2,HeatMoment,terr,terr Время работы с ошибками,current,double
+226,2,HeatMoment,tok,tok Время нормальной работы,current,double
+226,2,HeatMoment,UBat,UBat Напряжение батареи,current,double
+226,2,HeatMoment,tmin,tmin Время расход меньше минимального,current,double
+226,2,HeatMoment,tmax,tmax Время расход больше максимального,current,double
+226,2,HeatMoment,dT,dT Разность температур,current,double
+226,2,HeatMoment,tpow,tpow Время отсутствия питания,current,double
+226,2,HeatMoment,tall,tall Общее учетное время,current,double
+226,2,HeatMoment,tstop,tstop Время простоя теплосистемы,current,double
+226,2,HeatMoment,channel,channel Канал измерения,current,double
+226,2,HeatHourIntegral,Q,Интегральный почасовой архив Q Тепловая энергия подающий поток,history,double
+226,2,HeatHourIntegral,Q2,Интегральный почасовой архив Q Тепловая энергия обратный поток,history,double
+226,2,HeatHourIntegral,Q3,Интегральный почасовой архив Q Тепловая энергия поток подпитки,history,double
+226,2,HeatHourIntegral,V,Интегральный почасовой архив V Объем теплоносителя подающий поток,history,double
+226,2,HeatHourIntegral,V2,Интегральный почасовой архив V Объем теплоносителя обратный поток,history,double
+226,2,HeatHourIntegral,V3,Интегральный почасовой архив V Объем теплоносителя поток подпитки,history,double
+226,2,HeatHourIntegral,G,Интегральный почасовой архив G Масса теплоносителя подающий поток,history,double
+226,2,HeatHourIntegral,G2,Интегральный почасовой архив G Масса теплоносителя обратный поток,history,double
+226,2,HeatHourIntegral,G3,Интегральный почасовой архив G Масса теплоносителя поток подпитки,history,double
+226,2,HeatHourIntegral,CQ,Интегральный почасовой архив CQ Тепловая мощность подающий поток,history,double
+226,2,HeatHourIntegral,CQ2,Интегральный почасовой архив CQ Тепловая мощность обратный поток,history,double
+226,2,HeatHourIntegral,CQ3,Интегральный почасовой архив CQ Тепловая мощность поток подпитки,history,double
+226,2,HeatHourIntegral,CV,Интегральный почасовой архив CV Расход теплоносителя подающий поток,history,double
+226,2,HeatHourIntegral,CV2,Интегральный почасовой архив CV Расход теплоносителя обратный поток,history,double
+226,2,HeatHourIntegral,CV3,Интегральный почасовой архив CV Расход теплоносителя поток подпитки,history,double
+226,2,HeatHourIntegral,CG,Интегральный почасовой архив CG Массовый расход подающий поток,history,double
+226,2,HeatHourIntegral,CG2,Интегральный почасовой архив CG Массовый расход обратный поток,history,double
+226,2,HeatHourIntegral,CG3,Интегральный почасовой архив CG Массовый расход поток подпитки,history,double
+226,2,HeatHourIntegral,IV,Интегральный почасовой архив IV Объем по импульсному входу 1,history,double
+226,2,HeatHourIntegral,IV2,Интегральный почасовой архив IV Объем по импульсному входу 2,history,double
+226,2,HeatHourIntegral,IV3,Интегральный почасовой архив IV Объем по импульсному входу 3,history,double
+226,2,HeatHourIntegral,IV4,Интегральный почасовой архив IV Объем по импульсному входу 4,history,double
+226,2,HeatHourIntegral,T,Интегральный почасовой архив T Температура подающий поток,history,double
+226,2,HeatHourIntegral,T2,Интегральный почасовой архив T Температура обратный поток,history,double
+226,2,HeatHourIntegral,T3,Интегральный почасовой архив T Температура поток подпитки,history,double
+226,2,HeatHourIntegral,Т4,Интегральный почасовой архив T Температура окружающей среды,history,double
+226,2,HeatHourIntegral,P,Интегральный почасовой архив P Давление подающий поток,history,double
+226,2,HeatHourIntegral,P2,Интегральный почасовой архив P Давление обратный поток,history,double
+226,2,HeatHourIntegral,P3,Интегральный почасовой архив P Давление поток подпитки,history,double
+226,2,HeatHourIntegral,Err,Интегральный почасовой архив Err Флаги ошибок,history,double
+226,2,HeatHourIntegral,Top,Интегральный почасовой архив Top Наработка подсистемы,history,double
+226,2,HeatHourIntegral,terr,Интегральный почасовой архив terr Время работы с ошибками,history,double
+226,2,HeatHourIntegral,tok,Интегральный почасовой архив tok Время нормальной работы,history,double
+226,2,HeatHourIntegral,UBat,Интегральный почасовой архив UBat Напряжение батареи,history,double
+226,2,HeatHourIntegral,tmin,Интегральный почасовой архив tmin Время расход меньше минимального,history,double
+226,2,HeatHourIntegral,tmax,Интегральный почасовой архив tmax Время расход больше максимального,history,double
+226,2,HeatHourIntegral,dT,Интегральный почасовой архив dT Разность температур,history,double
+226,2,HeatHourIntegral,tpow,Интегральный почасовой архив tpow Время отсутствия питания,history,double
+226,2,HeatHourIntegral,tall,Интегральный почасовой архив tall Общее учетное время,history,double
+226,2,HeatHourIntegral,tstop,Интегральный почасовой архив tstop Время простоя теплосистемы,history,double
+226,3,HeatMoment,Q,Q Тепловая энергия подающий поток,current,double
+226,3,HeatMoment,Q2,Q Тепловая энергия обратный поток,current,double
+226,3,HeatMoment,Q3,Q Тепловая энергия поток подпитки,current,double
+226,3,HeatMoment,V,V Объем теплоносителя подающий поток,current,double
+226,3,HeatMoment,V2,V Объем теплоносителя обратный поток,current,double
+226,3,HeatMoment,V3,V Объем теплоносителя поток подпитки,current,double
+226,3,HeatMoment,G,G Масса теплоносителя подающий поток,current,double
+226,3,HeatMoment,G2,G Масса теплоносителя обратный поток,current,double
+226,3,HeatMoment,G3,G Масса теплоносителя поток подпитки,current,double
+226,3,HeatMoment,CQ,CQ Тепловая мощность подающий поток,current,double
+226,3,HeatMoment,CQ2,CQ Тепловая мощность обратный поток,current,double
+226,3,HeatMoment,CQ3,CQ Тепловая мощность поток подпитки,current,double
+226,3,HeatMoment,CV,CV Расход теплоносителя подающий поток,current,double
+226,3,HeatMoment,CV2,CV Расход теплоносителя обратный поток,current,double
+226,3,HeatMoment,CV3,CV Расход теплоносителя поток подпитки,current,double
+226,3,HeatMoment,CG,CG Массовый расход подающий поток,current,double
+226,3,HeatMoment,CG2,CG Массовый расход обратный поток,current,double
+226,3,HeatMoment,CG3,CG Массовый расход поток подпитки,current,double
+226,3,HeatMoment,IV,IV Объем по импульсному входу 1,current,double
+226,3,HeatMoment,IV2,IV Объем по импульсному входу 2,current,double
+226,3,HeatMoment,IV3,IV Объем по импульсному входу 3,current,double
+226,3,HeatMoment,IV4,IV Объем по импульсному входу 4,current,double
+226,3,HeatMoment,T,T Температура подающий поток,current,double
+226,3,HeatMoment,T2,T Температура обратный поток,current,double
+226,3,HeatMoment,T3,T Температура поток подпитки,current,double
+226,3,HeatMoment,T4,T Температура окружающей среды,current,double
+226,3,HeatMoment,P,P Давление подающий поток,current,double
+226,3,HeatMoment,P2,P Давление обратный поток,current,double
+226,3,HeatMoment,P3,P Давление поток подпитки,current,double
+226,3,HeatMoment,Err,Err Флаги ошибок,current,double
+226,3,HeatMoment,Top,Top Наработка подсистемы,current,double
+226,3,HeatMoment,terr,terr Время работы с ошибками,current,double
+226,3,HeatMoment,tok,tok Время нормальной работы,current,double
+226,3,HeatMoment,UBat,UBat Напряжение батареи,current,double
+226,3,HeatMoment,tmin,tmin Время расход меньше минимального,current,double
+226,3,HeatMoment,tmax,tmax Время расход больше максимального,current,double
+226,3,HeatMoment,dT,dT Разность температур,current,double
+226,3,HeatMoment,tpow,tpow Время отсутствия питания,current,double
+226,3,HeatMoment,tall,tall Общее учетное время,current,double
+226,3,HeatMoment,tstop,tstop Время простоя теплосистемы,current,double
+226,3,HeatMoment,channel,channel Канал измерения,current,double
+226,3,HeatHourIntegral,Q,Интегральный почасовой архив Q Тепловая энергия подающий поток,history,double
+226,3,HeatHourIntegral,Q2,Интегральный почасовой архив Q Тепловая энергия обратный поток,history,double
+226,3,HeatHourIntegral,Q3,Интегральный почасовой архив Q Тепловая энергия поток подпитки,history,double
+226,3,HeatHourIntegral,V,Интегральный почасовой архив V Объем теплоносителя подающий поток,history,double
+226,3,HeatHourIntegral,V2,Интегральный почасовой архив V Объем теплоносителя обратный поток,history,double
+226,3,HeatHourIntegral,V3,Интегральный почасовой архив V Объем теплоносителя поток подпитки,history,double
+226,3,HeatHourIntegral,G,Интегральный почасовой архив G Масса теплоносителя подающий поток,history,double
+226,3,HeatHourIntegral,G2,Интегральный почасовой архив G Масса теплоносителя обратный поток,history,double
+226,3,HeatHourIntegral,G3,Интегральный почасовой архив G Масса теплоносителя поток подпитки,history,double
+226,3,HeatHourIntegral,CQ,Интегральный почасовой архив CQ Тепловая мощность подающий поток,history,double
+226,3,HeatHourIntegral,CQ2,Интегральный почасовой архив CQ Тепловая мощность обратный поток,history,double
+226,3,HeatHourIntegral,CQ3,Интегральный почасовой архив CQ Тепловая мощность поток подпитки,history,double
+226,3,HeatHourIntegral,CV,Интегральный почасовой архив CV Расход теплоносителя подающий поток,history,double
+226,3,HeatHourIntegral,CV2,Интегральный почасовой архив CV Расход теплоносителя обратный поток,history,double
+226,3,HeatHourIntegral,CV3,Интегральный почасовой архив CV Расход теплоносителя поток подпитки,history,double
+226,3,HeatHourIntegral,CG,Интегральный почасовой архив CG Массовый расход подающий поток,history,double
+226,3,HeatHourIntegral,CG2,Интегральный почасовой архив CG Массовый расход обратный поток,history,double
+226,3,HeatHourIntegral,CG3,Интегральный почасовой архив CG Массовый расход поток подпитки,history,double
+226,3,HeatHourIntegral,IV,Интегральный почасовой архив IV Объем по импульсному входу 1,history,double
+226,3,HeatHourIntegral,IV2,Интегральный почасовой архив IV Объем по импульсному входу 2,history,double
+226,3,HeatHourIntegral,IV3,Интегральный почасовой архив IV Объем по импульсному входу 3,history,double
+226,3,HeatHourIntegral,IV4,Интегральный почасовой архив IV Объем по импульсному входу 4,history,double
+226,3,HeatHourIntegral,T,Интегральный почасовой архив T Температура подающий поток,history,double
+226,3,HeatHourIntegral,T2,Интегральный почасовой архив T Температура обратный поток,history,double
+226,3,HeatHourIntegral,T3,Интегральный почасовой архив T Температура поток подпитки,history,double
+226,3,HeatHourIntegral,Т4,Интегральный почасовой архив T Температура окружающей среды,history,double
+226,3,HeatHourIntegral,P,Интегральный почасовой архив P Давление подающий поток,history,double
+226,3,HeatHourIntegral,P2,Интегральный почасовой архив P Давление обратный поток,history,double
+226,3,HeatHourIntegral,P3,Интегральный почасовой архив P Давление поток подпитки,history,double
+226,3,HeatHourIntegral,Err,Интегральный почасовой архив Err Флаги ошибок,history,double
+226,3,HeatHourIntegral,Top,Интегральный почасовой архив Top Наработка подсистемы,history,double
+226,3,HeatHourIntegral,terr,Интегральный почасовой архив terr Время работы с ошибками,history,double
+226,3,HeatHourIntegral,tok,Интегральный почасовой архив tok Время нормальной работы,history,double
+226,3,HeatHourIntegral,UBat,Интегральный почасовой архив UBat Напряжение батареи,history,double
+226,3,HeatHourIntegral,tmin,Интегральный почасовой архив tmin Время расход меньше минимального,history,double
+226,3,HeatHourIntegral,tmax,Интегральный почасовой архив tmax Время расход больше максимального,history,double
+226,3,HeatHourIntegral,dT,Интегральный почасовой архив dT Разность температур,history,double
+226,3,HeatHourIntegral,tpow,Интегральный почасовой архив tpow Время отсутствия питания,history,double
+226,3,HeatHourIntegral,tall,Интегральный почасовой архив tall Общее учетное время,history,double
+226,3,HeatHourIntegral,tstop,Интегральный почасовой архив tstop Время простоя теплосистемы,history,doubledevice_type,channel,measure,api_tag,display,kind,value_type
+226,1,HeatMoment,Q,Q Тепловая энергия подающий поток,current,double
+226,1,HeatMoment,Q2,Q Тепловая энергия обратный поток,current,double
+226,1,HeatMoment,Q3,Q Тепловая энергия поток подпитки,current,double
+226,1,HeatMoment,V,V Объем теплоносителя подающий поток,current,double
+226,1,HeatMoment,V2,V Объем теплоносителя обратный поток,current,double
+226,1,HeatMoment,V3,V Объем теплоносителя поток подпитки,current,double
+226,1,HeatMoment,G,G Масса теплоносителя подающий поток,current,double
+226,1,HeatMoment,G2,G Масса теплоносителя обратный поток,current,double
+226,1,HeatMoment,G3,G Масса теплоносителя поток подпитки,current,double
+226,1,HeatMoment,CQ,CQ Тепловая мощность подающий поток,current,double
+226,1,HeatMoment,CQ2,CQ Тепловая мощность обратный поток,current,double
+226,1,HeatMoment,CQ3,CQ Тепловая мощность поток подпитки,current,double
+226,1,HeatMoment,CV,CV Расход теплоносителя подающий поток,current,double
+226,1,HeatMoment,CV2,CV Расход теплоносителя обратный поток,current,double
+226,1,HeatMoment,CV3,CV Расход теплоносителя поток подпитки,current,double
+226,1,HeatMoment,CG,CG Массовый расход подающий поток,current,double
+226,1,HeatMoment,CG2,CG Массовый расход обратный поток,current,double
+226,1,HeatMoment,CG3,CG Массовый расход поток подпитки,current,double
+226,1,HeatMoment,IV,IV Объем по импульсному входу 1,current,double
+226,1,HeatMoment,IV2,IV Объем по импульсному входу 2,current,double
+226,1,HeatMoment,IV3,IV Объем по импульсному входу 3,current,double
+226,1,HeatMoment,IV4,IV Объем по импульсному входу 4,current,double
+226,1,HeatMoment,T,T Температура подающий поток,current,double
+226,1,HeatMoment,T2,T Температура обратный поток,current,double
+226,1,HeatMoment,T3,T Температура поток подпитки,current,double
+226,1,HeatMoment,T4,T Температура окружающей среды,current,double
+226,1,HeatMoment,P,P Давление подающий поток,current,double
+226,1,HeatMoment,P2,P Давление обратный поток,current,double
+226,1,HeatMoment,P3,P Давление поток подпитки,current,double
+226,1,HeatMoment,Err,Err Флаги ошибок,current,double
+226,1,HeatMoment,Top,Top Наработка подсистемы,current,double
+226,1,HeatMoment,terr,terr Время работы с ошибками,current,double
+226,1,HeatMoment,tok,tok Время нормальной работы,current,double
+226,1,HeatMoment,UBat,UBat Напряжение батареи,current,double
+226,1,HeatMoment,tmin,tmin Время расход меньше минимального,current,double
+226,1,HeatMoment,tmax,tmax Время расход больше максимального,current,double
+226,1,HeatMoment,dT,dT Разность температур,current,double
+226,1,HeatMoment,tpow,tpow Время отсутствия питания,current,double
+226,1,HeatMoment,tall,tall Общее учетное время,current,double
+226,1,HeatMoment,tstop,tstop Время простоя теплосистемы,current,double
+226,1,HeatMoment,channel,channel Канал измерения,current,double
+226,1,HeatHourIntegral,Q,Интегральный почасовой архив Q Тепловая энергия подающий поток,history,double
+226,1,HeatHourIntegral,Q2,Интегральный почасовой архив Q Тепловая энергия обратный поток,history,double
+226,1,HeatHourIntegral,Q3,Интегральный почасовой архив Q Тепловая энергия поток подпитки,history,double
+226,1,HeatHourIntegral,V,Интегральный почасовой архив V Объем теплоносителя подающий поток,history,double
+226,1,HeatHourIntegral,V2,Интегральный почасовой архив V Объем теплоносителя обратный поток,history,double
+226,1,HeatHourIntegral,V3,Интегральный почасовой архив V Объем теплоносителя поток подпитки,history,double
+226,1,HeatHourIntegral,G,Интегральный почасовой архив G Масса теплоносителя подающий поток,history,double
+226,1,HeatHourIntegral,G2,Интегральный почасовой архив G Масса теплоносителя обратный поток,history,double
+226,1,HeatHourIntegral,G3,Интегральный почасовой архив G Масса теплоносителя поток подпитки,history,double
+226,1,HeatHourIntegral,CQ,Интегральный почасовой архив CQ Тепловая мощность подающий поток,history,double
+226,1,HeatHourIntegral,CQ2,Интегральный почасовой архив CQ Тепловая мощность обратный поток,history,double
+226,1,HeatHourIntegral,CQ3,Интегральный почасовой архив CQ Тепловая мощность поток подпитки,history,double
+226,1,HeatHourIntegral,CV,Интегральный почасовой архив CV Расход теплоносителя подающий поток,history,double
+226,1,HeatHourIntegral,CV2,Интегральный почасовой архив CV Расход теплоносителя обратный поток,history,double
+226,1,HeatHourIntegral,CV3,Интегральный почасовой архив CV Расход теплоносителя поток подпитки,history,double
+226,1,HeatHourIntegral,CG,Интегральный почасовой архив CG Массовый расход подающий поток,history,double
+226,1,HeatHourIntegral,CG2,Интегральный почасовой архив CG Массовый расход обратный поток,history,double
+226,1,HeatHourIntegral,CG3,Интегральный почасовой архив CG Массовый расход поток подпитки,history,double
+226,1,HeatHourIntegral,IV,Интегральный почасовой архив IV Объем по импульсному входу 1,history,double
+226,1,HeatHourIntegral,IV2,Интегральный почасовой архив IV Объем по импульсному входу 2,history,double
+226,1,HeatHourIntegral,IV3,Интегральный почасовой архив IV Объем по импульсному входу 3,history,double
+226,1,HeatHourIntegral,IV4,Интегральный почасовой архив IV Объем по импульсному входу 4,history,double
+226,1,HeatHourIntegral,T,Интегральный почасовой архив T Температура подающий поток,history,double
+226,1,HeatHourIntegral,T2,Интегральный почасовой архив T Температура обратный поток,history,double
+226,1,HeatHourIntegral,T3,Интегральный почасовой архив T Температура поток подпитки,history,double
+226,1,HeatHourIntegral,Т4,Интегральный почасовой архив T Температура окружающей среды,history,double
+226,1,HeatHourIntegral,P,Интегральный почасовой архив P Давление подающий поток,history,double
+226,1,HeatHourIntegral,P2,Интегральный почасовой архив P Давление обратный поток,history,double
+226,1,HeatHourIntegral,P3,Интегральный почасовой архив P Давление поток подпитки,history,double
+226,1,HeatHourIntegral,Err,Интегральный почасовой архив Err Флаги ошибок,history,double
+226,1,HeatHourIntegral,Top,Интегральный почасовой архив Top Наработка подсистемы,history,double
+226,1,HeatHourIntegral,terr,Интегральный почасовой архив terr Время работы с ошибками,history,double
+226,1,HeatHourIntegral,tok,Интегральный почасовой архив tok Время нормальной работы,history,double
+226,1,HeatHourIntegral,UBat,Интегральный почасовой архив UBat Напряжение батареи,history,double
+226,1,HeatHourIntegral,tmin,Интегральный почасовой архив tmin Время расход меньше минимального,history,double
+226,1,HeatHourIntegral,tmax,Интегральный почасовой архив tmax Время расход больше максимального,history,double
+226,1,HeatHourIntegral,dT,Интегральный почасовой архив dT Разность температур,history,double
+226,1,HeatHourIntegral,tpow,Интегральный почасовой архив tpow Время отсутствия питания,history,double
+226,1,HeatHourIntegral,tall,Интегральный почасовой архив tall Общее учетное время,history,double
+226,1,HeatHourIntegral,tstop,Интегральный почасовой архив tstop Время простоя теплосистемы,history,double
