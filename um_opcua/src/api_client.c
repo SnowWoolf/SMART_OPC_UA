@@ -55,6 +55,11 @@ http_post_json_once(const char *url, const char *json, int with_protocol_header,
 
     HttpBuffer chunk;
     chunk.data = (char *)malloc(1);
+    if(!chunk.data) {
+        curl_easy_cleanup(curl);
+        return -1;
+    }
+    chunk.data[0] = '\0';
     chunk.size = 0;
 
     struct curl_slist *headers = NULL;
@@ -104,6 +109,11 @@ http_get_json_once(const char *url, const char *protocol, char **response_out) {
 
     HttpBuffer chunk;
     chunk.data = (char *)malloc(1);
+    if(!chunk.data) {
+        curl_easy_cleanup(curl);
+        return -1;
+    }
+    chunk.data[0] = '\0';
     chunk.size = 0;
 
     struct curl_slist *headers = NULL;
@@ -428,6 +438,7 @@ int
 api_read_archive(int meter_id,
                  const char *measure,
                  const char *tag,
+                 int channel,
                  long start_ts,
                  long end_ts,
                  ArchiveResult *out) {
@@ -495,34 +506,47 @@ api_read_archive(int meter_id,
                 if(out->count >= MAX_ARCH_POINTS)
                     break;
 
+                cJSON *ch = cJSON_GetObjectItem(valItem, "channel");
+                if(!cJSON_IsNumber(ch) || ch->valueint != channel)
+                    continue;
+
                 cJSON *ts = cJSON_GetObjectItem(valItem, "ts");
                 if(!cJSON_IsString(ts))
                     continue;
 
-                ArchivePoint *pt = &out->points[out->count];
-                memset(pt, 0, sizeof(*pt));
+                ArchivePoint pt;
+                memset(&pt, 0, sizeof(pt));
 
-                if(!parse_iso_datetime_to_ua(ts->valuestring, &pt->ts))
+                if(!parse_iso_datetime_to_ua(ts->valuestring, &pt.ts))
                     continue;
 
                 cJSON *tags = cJSON_GetObjectItem(valItem, "tags");
-                if(cJSON_IsArray(tags)) {
-                    cJSON *tagItem = NULL;
-                    cJSON_ArrayForEach(tagItem, tags) {
-                        cJSON *tagName = cJSON_GetObjectItem(tagItem, "tag");
-                        cJSON *tagVal = cJSON_GetObjectItem(tagItem, "val");
+                if(!cJSON_IsArray(tags))
+                    continue;
 
-                        if(cJSON_IsString(tagName) &&
-                           strcmp(tagName->valuestring, tag) == 0 &&
-                           cJSON_IsNumber(tagVal)) {
-                            pt->value = tagVal->valuedouble;
-                            pt->has_value = true;
-                            break;
-                        }
-                    }
+                cJSON *tagItem = NULL;
+                cJSON_ArrayForEach(tagItem, tags) {
+                    cJSON *tagName = cJSON_GetObjectItem(tagItem, "tag");
+                    cJSON *tagVal = cJSON_GetObjectItem(tagItem, "val");
+
+                    if(!cJSON_IsString(tagName))
+                        continue;
+
+                    if(strcmp(tagName->valuestring, tag) != 0)
+                        continue;
+
+                    if(!cJSON_IsNumber(tagVal))
+                        continue;
+
+                    pt.value = tagVal->valuedouble;
+                    pt.has_value = true;
+                    break;
                 }
 
-                out->count++;
+                if(pt.has_value) {
+                    out->points[out->count] = pt;
+                    out->count++;
+                }
             }
 
             rc = 0;
