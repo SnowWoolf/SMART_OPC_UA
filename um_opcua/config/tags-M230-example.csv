@@ -1,0 +1,12 @@
+Тип устройства,Канал,Тип показаний,Тег API,Тег SCADA,Тип тега,Тип данных
+3,0,ElMomentQuality,UA,Напряжение фазы A,current,double
+3,0,ElMomentQuality,UB,Напряжение фазы B,current,double
+3,0,ElMomentQuality,UC,Напряжение фазы C,current,double
+3,0,ElMomentQuality,IA,Ток фазы A,current,double
+3,0,ElMomentQuality,IB,Ток фазы B,current,double
+3,0,ElMomentQuality,IC,Ток фазы C,current,double
+3,0,GetTime,,Время,current,datetime
+3,0,ElDayEnergy,A+0,A+ на начало суток,history,double
+3,0,ElMonthEnergy,A+0,A+ на начало месяца,history,double
+3,0,ElDayConsEnergy,A+0,A+ потребление за сутки,history,double
+3,0,ElArr1ConsPower,P+,P+ профиль мощности,history,double

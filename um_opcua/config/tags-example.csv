@@ -1,7 +1,0 @@
-device_type,channel,measure,api_tag,display,kind,value_type
-
-221,1,HeatHourIntegral,T,T канал 1,history,double
-221,2,HeatHourIntegral,T,T канал 2,history,double
-221,1,HeatHourIntegral,T2,T2 канал 1,history,double
-221,2,HeatHourIntegral,T2,T2 канал 2,history,double
-221,0,GetTime,,Время прибора,current,datetime
